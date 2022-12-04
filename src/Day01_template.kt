@@ -1,10 +1,10 @@
 fun main() {
-    fun part1(input: List<String>): Int {
-        return input.size
+    fun part1(input: Collection<String>): Int {
+        return input.count()
     }
 
-    fun part2(input: List<String>): Int {
-        return input.size
+    fun part2(input: Collection<String>): Int {
+        return input.count()
     }
 
     // test if implementation meets criteria from the description, like:

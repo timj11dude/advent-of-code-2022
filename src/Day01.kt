@@ -1,6 +1,6 @@
 fun main() {
 
-    fun List<String>.groupByBlankLine() = buildMap<Int, List<String>> {
+    fun Collection<String>.groupByBlankLine() = buildMap<Int, List<String>> {
         var i = 0
         this@groupByBlankLine.forEach {
             if (it.isBlank()) i++
@@ -11,15 +11,15 @@ fun main() {
         }
     }
 
-    fun shared(input: List<String>) = input.groupByBlankLine()
+    fun shared(input: Collection<String>) = input.groupByBlankLine()
         .mapValues { entry -> entry.value.map { it.toInt() } }
 
-    fun part1(input: List<String>): Int {
+    fun part1(input: Collection<String>): Int {
         return shared(input)
             .maxOf { entry -> entry.value.sum() }
     }
 
-    fun part2(input: List<String>): Int {
+    fun part2(input: Collection<String>): Int {
         return shared(input)
             .values.map { it.sum() }
             .sorted()

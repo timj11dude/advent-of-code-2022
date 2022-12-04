@@ -35,11 +35,11 @@ fun main() {
         else -> throw IllegalArgumentException("Unknown yours value")
     }
 
-    fun part1(input: List<String>): Int = input
+    fun part1(input: Collection<String>): Int = input
         .map { it.split(" ") }
         .sumOf { points(it.first(), it.last()) }
 
-    fun part2(input: List<String>): Int {
+    fun part2(input: Collection<String>): Int {
         fun String.getDrawPoints() = when (this) {
             "A" -> 1 + 3
             "B" -> 2 + 3
