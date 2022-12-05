@@ -2,24 +2,28 @@ fun main() {
 
     val extractionRegex = "^(\\d+)-(\\d+),(\\d+)-(\\d+)$".toRegex()
 
-    fun IntRange.contains(other: IntRange): Boolean = this.first <= other.first && this.last >= other.last
+    fun IntRange.fullyContains(other: IntRange): Boolean = this.first <= other.first && this.last >= other.last
+    fun IntRange.partiallycontains(other: IntRange): Boolean = this.first in other || this.last in other || other.first in this || other.last in this
+
+    fun shared(input: Collection<String>) = input.flatMap { row ->
+        extractionRegex.matchEntire(row)!!.groupValues
+            .drop(1)
+            .map(String::toInt).let {
+                listOf(
+                    it[0]..it[1],
+                    it[2]..it[3]
+                )
+            }
+    }.windowed(2, 2)
 
     fun part1(input: Collection<String>): Int {
-        return input.flatMap { row ->
-            extractionRegex.matchEntire(row)!!.groupValues
-                .drop(1)
-                .map(String::toInt).let {
-                    listOf(
-                        it[0]..it[1],
-                        it[2]..it[3]
-                    )
-                }
-        }.windowed(2, 2)
-            .count { it.first().contains(it.last()) || it.last().contains(it.first()) }
+        return shared(input)
+            .count { it.first().fullyContains(it.last()) || it.last().fullyContains(it.first()) }
     }
 
     fun part2(input: Collection<String>): Int {
-        return input.count()
+        return shared(input)
+            .count { it.first().partiallycontains(it.last()) }
     }
 
     // test if implementation meets criteria from the description, like:
