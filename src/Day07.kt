@@ -31,12 +31,9 @@ fun main() {
             while (computedFolderSize.size != map.size) {
                 val newDiff = map.size - computedFolderSize.size
                 if (newDiff == previousDiff) {
-                    println(map.keys subtract computedFolderSize.keys)
                     throw IllegalStateException("Failed to reduce diff")
                 }
                 previousDiff = newDiff
-                println("input map ${map.size}")
-                println("computedFolderSize ${computedFolderSize.size}")
                 map.forEach { (k, v) ->
                     if (!computedFolderSize.containsKey(k) && (v.all { it is File } || computedFolderSize.keys.containsAll(v.filterIsInstance<Folder>()))) {
                         computedFolderSize[k] = v.sumOf {
@@ -61,11 +58,19 @@ fun main() {
         return folderSizes.values.filter { it <= 100000 }.sum()
     }
 
-    fun part2(input: Collection<String>) = 0
+    fun part2(input: Collection<String>): Int {
+        val folderSizes = FS(readInput(input)).getFolderSizes()
+        val totalSpace = 70000000
+        val spaceRequired = 30000000
+        val remainingSpace = totalSpace - folderSizes[Root]!!
+        val needAdditional = spaceRequired - remainingSpace
+        return folderSizes.values.filter { it >= needAdditional }.minOf { it }
+    }
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day07_test")
     check(part1(testInput) == 95437)
+    check(part2(testInput) == 24933642)
 
     val input = readInput("Day07")
     println(part1(input))
